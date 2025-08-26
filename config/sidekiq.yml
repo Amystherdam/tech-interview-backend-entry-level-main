@@ -1,6 +1,6 @@
 :concurrency: 3
 :timeout: 60
-:verbose: true
+:verbose: false
 :queues:
   - critical
   - default
