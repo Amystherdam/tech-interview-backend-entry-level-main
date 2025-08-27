@@ -12,7 +12,7 @@ gem 'sidekiq', '~> 7.2', '>= 7.2.4'
 gem 'sidekiq-scheduler', '~> 5.0', '>= 5.0.3'
 
 group :development, :test do
-  gem "debug", platforms: %i[ mri windows ]
+  gem 'pry', '~> 0.15.0'
   gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'main'
 end
 
