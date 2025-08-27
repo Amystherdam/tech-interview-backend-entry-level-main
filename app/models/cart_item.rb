@@ -5,10 +5,7 @@ class CartItem < ApplicationRecord
   after_commit :update_cart_interaction, :recovery_cart, on: %i[create update destroy]
 
   validates :product_id, uniqueness: { scope: :cart_id, message: "Item is already in cart" }
-
-  def increment_quantity(by:)
-    self.quantity = (quantity || 0) + by.to_i
-  end
+  validates :quantity, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
 
   private
 

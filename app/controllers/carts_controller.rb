@@ -29,7 +29,7 @@ class CartsController < ApplicationController
       return
     end
 
-    cart_item.increment_quantity(by: cart_item_params[:quantity])
+    cart_item.quantity = cart_item_params[:quantity]
 
     if cart_item.save
       render json: CartSerializer.new(@cart).as_json, status: :created
