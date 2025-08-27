@@ -7,6 +7,42 @@ RSpec.describe "/carts", type: :request do
     get '/cart'
   end
 
+  describe "GET /cart" do
+    context "when the cart is empty" do
+      it "returns an empty cart with total_price 0" do
+        get '/cart'
+        json = JSON.parse(response.body)
+
+        expect(response).to have_http_status(:ok)
+        expect(json["id"]).to eq(session[:cart_id])
+        expect(json["products"]).to eq([])
+        expect(json["total_price"]).to eq(0.0)
+      end
+    end
+
+    context "when the cart has items" do
+      let!(:cart_item) { create(:cart_item, cart_id: session[:cart_id], product: product, quantity: 3) }
+
+      it "returns the serialized cart with products" do
+        get '/cart'
+        json = JSON.parse(response.body)
+
+        expect(response).to have_http_status(:ok)
+        expect(json["id"]).to eq(session[:cart_id])
+        expect(json["products"].size).to eq(1)
+
+        product_json = json["products"].first
+        expect(product_json["id"]).to eq(product.id)
+        expect(product_json["name"]).to eq(product.name)
+        expect(product_json["quantity"]).to eq(cart_item.quantity)
+        expect(product_json["unit_price"]).to eq(product.price.to_f)
+        expect(product_json["total_price"]).to eq((cart_item.quantity * product.price).to_f)
+
+        expect(json["total_price"]).to eq((cart_item.quantity * product.price).to_f)
+      end
+    end
+  end
+
   describe "POST /cart" do
     subject do
       post '/cart', params: { cart: { product_id: product.id, quantity: 2 } }, as: :json
