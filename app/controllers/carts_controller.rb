@@ -1,3 +1,40 @@
 class CartsController < ApplicationController
-  ## TODO Escreva a lógica dos carrinhos aqui
+  before_action :set_cart, only: %i[ show add_items ]
+
+  # GET /cart
+  def show
+    # TODO
+  end
+
+  # POST /cart
+  def create
+    # TODO
+  end
+
+  # POST /cart/add_items
+  def add_items
+    cart_item = CartItem.find_or_initialize_by(
+      cart_id: session[:cart_id],
+      product_id: cart_item_params[:product_id]
+    )
+
+    cart_item.increment_quantity(by: cart_item_params[:quantity])
+
+    if cart_item.save
+      render json: cart_item, status: :created
+    else
+      render json: cart_item.errors, status: :unprocessable_entity
+    end
+  end 
+
+
+  private
+    def set_cart
+      @cart = Cart.find_by(id: session[:cart_id]) || Cart.create(total_price: 0, last_interaction_at: DateTime.now)
+      session[:cart_id] = @cart.id
+    end
+
+    def cart_item_params
+      params.permit(:product_id, :quantity)
+    end
 end
