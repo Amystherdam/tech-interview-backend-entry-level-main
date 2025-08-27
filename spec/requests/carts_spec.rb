@@ -13,8 +13,8 @@ RSpec.describe "/carts", type: :request do
     
     context 'when the product already is in the cart' do
       subject do
-        post '/cart/add_items', params: { product_id: product.id, quantity: 1 }, as: :json
-        post '/cart/add_items', params: { product_id: product.id, quantity: 1 }, as: :json
+        post '/cart/add_items', params: { cart: { product_id: product.id, quantity: 1 } }, as: :json
+        post '/cart/add_items', params: { cart: { product_id: product.id, quantity: 1 } }, as: :json
       end
 
       it 'updates the quantity of the existing item in the cart' do

@@ -19,6 +19,8 @@ create_db_if_not_exists() {
 if [ "$RAILS_ENV" == "development" ]; then
   create_db_if_not_exists "$DB_NAME" development
   bundle exec rails db:migrate
+
+  bundle exec rails runner "puts 'Seeding database...'; Product.count == 0 && Rails.application.load_seed"
 elif [ "$RAILS_ENV" == "test" ]; then
   create_db_if_not_exists "$TEST_DB_NAME" test
   bundle exec rails db:migrate

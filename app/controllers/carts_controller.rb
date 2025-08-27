@@ -21,7 +21,7 @@ class CartsController < ApplicationController
     cart_item.increment_quantity(by: cart_item_params[:quantity])
 
     if cart_item.save
-      render json: cart_item, status: :created
+      render json: CartSerializer.new(@cart).as_json, status: :created
     else
       render json: cart_item.errors, status: :unprocessable_entity
     end
@@ -35,6 +35,6 @@ class CartsController < ApplicationController
     end
 
     def cart_item_params
-      params.permit(:product_id, :quantity)
+      params.require(:cart).permit(:product_id, :quantity)
     end
 end
