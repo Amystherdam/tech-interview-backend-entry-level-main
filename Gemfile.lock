@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/faker-ruby/faker.git
+  revision: 8fbda8de78d6827cae94bc2dee7dfa4d9a91f261
+  branch: main
+  specs:
+    faker (3.5.2)
+      i18n (>= 1.8.11, < 2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -83,6 +91,10 @@ GEM
     concurrent-ruby (1.2.3)
     connection_pool (2.4.1)
     crass (1.0.6)
+    database_cleaner-active_record (2.2.2)
+      activerecord (>= 5.a)
+      database_cleaner-core (~> 2.0)
+    database_cleaner-core (2.0.1)
     date (3.3.4)
     debug (1.9.2)
       irb (~> 1.10)
@@ -92,6 +104,8 @@ GEM
     erubi (1.12.0)
     et-orbi (1.2.11)
       tzinfo
+    factory_bot (6.5.5)
+      activesupport (>= 6.1.0)
     fugit (1.11.0)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
@@ -210,6 +224,8 @@ GEM
     rspec-support (3.13.1)
     rufus-scheduler (3.9.1)
       fugit (~> 1.1, >= 1.1.6)
+    shoulda-matchers (6.5.0)
+      activesupport (>= 5.2.0)
     sidekiq (7.2.4)
       concurrent-ruby (< 2)
       connection_pool (>= 2.3.0)
@@ -241,12 +257,16 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap
+  database_cleaner-active_record
   debug
+  factory_bot (~> 6.5)
+  faker!
   pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 7.1.3, >= 7.1.3.2)
   redis (~> 5.2)
   rspec-rails (~> 6.1.0)
+  shoulda-matchers (~> 6.0)
   sidekiq (~> 7.2, >= 7.2.4)
   sidekiq-scheduler (~> 5.0, >= 5.0.3)
   tzinfo-data

@@ -13,8 +13,12 @@ gem 'sidekiq-scheduler', '~> 5.0', '>= 5.0.3'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
-  gem 'rspec-rails', '~> 6.1.0'
+  gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'main'
 end
 
-group :development do
+group :test do
+  gem 'rspec-rails', '~> 6.1.0'
+  gem "factory_bot", "~> 6.5"
+  gem 'database_cleaner-active_record'
+  gem 'shoulda-matchers', '~> 6.0'
 end
