@@ -1,5 +1,5 @@
 class CartsController < ApplicationController
-  before_action :set_cart, only: %i[ show create add_items ]
+  before_action :set_cart, only: %i[ show create add_items remove_item ]
 
   # GET /cart
   def show
@@ -19,10 +19,15 @@ class CartsController < ApplicationController
 
   # POST /cart/add_items
   def add_items
-    cart_item = CartItem.find_or_initialize_by(
+    cart_item = CartItem.find_by(
       cart_id: session[:cart_id],
       product_id: cart_item_params[:product_id]
     )
+
+    unless cart_item
+      render json: 'Just adding items', status: :ok
+      return
+    end
 
     cart_item.increment_quantity(by: cart_item_params[:quantity])
 
@@ -33,6 +38,19 @@ class CartsController < ApplicationController
     end
   end 
 
+  # DELETE /cart/:product_id
+  def remove_item
+    cart_item = @cart.cart_items.find_by(product_id: params[:product_id].to_i)
+
+    unless cart_item
+      render json: 'Product not found', status: :ok
+      return
+    end
+
+    if cart_item.destroy
+      render json: CartSerializer.new(@cart).as_json, status: :ok
+    end
+  end
 
   private
     def set_cart
