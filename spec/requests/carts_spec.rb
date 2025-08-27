@@ -86,4 +86,33 @@ RSpec.describe "/carts", type: :request do
       end
     end
   end
+
+  describe "DELETE /cart/:product_id" do
+    let!(:cart_item) { create(:cart_item, cart_id: session[:cart_id], product: product, quantity: 2) }
+
+    context "when the product exists in the cart" do
+      it "removes the item and returns the updated cart" do
+        expect {
+          delete "/cart/#{product.id}"
+        }.to change { CartItem.count }.by(-1)
+
+        expect(response).to have_http_status(:ok)
+
+        json = JSON.parse(response.body)
+        expect(json["id"]).to eq(session[:cart_id])
+        expect(json["products"]).to eq([])
+        expect(json["total_price"]).to eq(0.0)
+      end
+    end
+
+    context "when the product does not exist in the cart" do
+      it "returns ok with 'Product not found' message" do
+        delete "/cart/0"
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("Product not found")
+      end
+    end
+  end
+
 end
