@@ -6,6 +6,7 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     ports:
       - '5432:5432'
     volumes:
@@ -40,23 +41,6 @@ services:
       - redis
     ports:
       - "3000:3000"
-    profiles:
-      - development
-  test:
-    build: .
-    entrypoint: ["bash", "./setup_app.sh"]
-    command: bundle exec rspec
-    volumes:
-      - .:/app
-    depends_on:
-      - db
-      - redis 
-    environment:
-      RAILS_ENV: test
-    env_file:
-      - ./.env
-    profiles:
-      - test
 
 volumes:
   postgres:

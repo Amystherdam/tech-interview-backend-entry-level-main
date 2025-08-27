@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB_TEST}
+    ports:
+      - "5432:5432"
+  test:
+    build: .
+    entrypoint: ["bash", "./setup_app.sh"]
+    command: bundle exec rspec
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      RAILS_ENV: test
+      DATABASE_URL: $DATABASE_URL_TEST 
+    env_file:
+      - ./.env
+
