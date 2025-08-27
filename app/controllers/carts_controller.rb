@@ -1,5 +1,5 @@
 class CartsController < ApplicationController
-  before_action :set_cart, only: %i[ show add_items ]
+  before_action :set_cart, only: %i[ show create add_items ]
 
   # GET /cart
   def show
@@ -8,7 +8,13 @@ class CartsController < ApplicationController
 
   # POST /cart
   def create
-    # TODO
+    cart_item = CartItem.new(cart_item_params.merge(cart_id: session[:cart_id]))
+
+    if cart_item.save
+      render json: CartSerializer.new(@cart).as_json, status: :created
+    else
+      render json: cart_item.errors.full_messages, status: :unprocessable_entity
+    end
   end
 
   # POST /cart/add_items
