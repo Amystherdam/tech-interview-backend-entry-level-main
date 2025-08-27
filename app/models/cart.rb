@@ -1,6 +1,8 @@
 class Cart < ApplicationRecord
   enum status: { active: 0, abandoned: 1 }
 
+  has_many :cart_items, dependent: :destroy
+
   validates :total_price, numericality: { only_numeric: true, greater_than_or_equal_to: 0 }
 
   def mark_as_abandoned
