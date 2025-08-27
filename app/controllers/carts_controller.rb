@@ -3,7 +3,7 @@ class CartsController < ApplicationController
 
   # GET /cart
   def show
-    # TODO
+    render json: CartSerializer.new(@cart).as_json, status: :ok
   end
 
   # POST /cart
